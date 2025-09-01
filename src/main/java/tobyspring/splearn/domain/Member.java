@@ -1,8 +1,7 @@
 package tobyspring.splearn.domain;
 
+import static java.util.Objects.*;
 import static org.springframework.util.Assert.*;
-
-import java.util.Objects;
 
 import lombok.Getter;
 import lombok.ToString;
@@ -19,17 +18,20 @@ public class Member {
 
 	private MemberStatus status;
 
-	private Member(String email, String nickname, String passwordHash) {
-		this.email = Objects.requireNonNull(email);
-		this.nickname = Objects.requireNonNull(nickname);
-		this.passwordHash = Objects.requireNonNull(passwordHash);
-
-		this.status = MemberStatus.PENDING;
+	private Member() {
 	}
 
-	// 정적 팩토리 메소드 ->
-	public static Member create(String email, String nickname, String password, PasswordEncoder passwordEncoder) {
-		return new Member(email, nickname, passwordEncoder.encode(password));
+	// 정적 팩토리 메소드 -> new 클래스()를 안써서 이름을 통해 의도를 들어낼 수 있음.
+	public static Member create(MemberCreateRequest createRequest, PasswordEncoder passwordEncoder) {
+		Member member = new Member();
+
+		member.email = requireNonNull(createRequest.email());
+		member.nickname = requireNonNull(createRequest.nickname());
+		member.passwordHash = requireNonNull(passwordEncoder.encode(createRequest.password()));
+
+		member.status = MemberStatus.PENDING;
+
+		return member;
 	}
 
 	public void activate() {
@@ -49,10 +51,14 @@ public class Member {
 	}
 
 	public void changeNickname(String nickname) {
-		this.nickname = nickname;
+		this.nickname = requireNonNull(nickname);
 	}
 
 	public void changePassword(String password, PasswordEncoder passwordEncoder) {
-		this.passwordHash = passwordEncoder.encode(password);
+		this.passwordHash = passwordEncoder.encode(requireNonNull(password));
+	}
+
+	public boolean isActive() {
+		return status == MemberStatus.ACTIVE;
 	}
 }

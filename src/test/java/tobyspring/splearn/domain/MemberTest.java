@@ -24,7 +24,7 @@ class MemberTest {
 			}
 		};
 
-		member = Member.create("cjl2076@naver.com", "jaeryang", "secret", passwordEncoder);
+		member = Member.create(new MemberCreateRequest("cjl2076@naver.com", "jaeryang", "secret"), passwordEncoder);
 	}
 
 	@Test
@@ -73,7 +73,7 @@ class MemberTest {
 
 	@Test
 	void changeNickname() {
-	    assertThat(member.getNickname()).isEqualTo("jaeryang");
+		assertThat(member.getNickname()).isEqualTo("jaeryang");
 
 		member.changeNickname("toby");
 
@@ -82,11 +82,22 @@ class MemberTest {
 
 	@Test
 	void changePassword() {
-	    member.changePassword("verySecret", passwordEncoder);
+		member.changePassword("verySecret", passwordEncoder);
 
 		assertThat(member.verifyPassword("verySecret", passwordEncoder)).isTrue();
+	}
 
+	@Test
+	void isActive() {
+		assertThat(member.isActive()).isFalse();
 
+		member.activate();
+
+		assertThat(member.isActive()).isTrue();
+
+		member.deactivate();
+
+		assertThat(member.isActive()).isFalse();
 	}
 
 }
