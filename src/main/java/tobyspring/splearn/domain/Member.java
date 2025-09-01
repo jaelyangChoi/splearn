@@ -4,8 +4,6 @@ import static org.springframework.util.Assert.*;
 
 import java.util.Objects;
 
-import org.springframework.lang.NonNull;
-
 import lombok.Getter;
 import lombok.ToString;
 
@@ -21,12 +19,17 @@ public class Member {
 
 	private MemberStatus status;
 
-	public Member(String email, String nickname, String passwordHash) {
+	private Member(String email, String nickname, String passwordHash) {
 		this.email = Objects.requireNonNull(email);
 		this.nickname = Objects.requireNonNull(nickname);
 		this.passwordHash = Objects.requireNonNull(passwordHash);
 
 		this.status = MemberStatus.PENDING;
+	}
+
+	// 정적 팩토리 메소드 ->
+	public static Member create(String email, String nickname, String password, PasswordEncoder passwordEncoder) {
+		return new Member(email, nickname, passwordEncoder.encode(password));
 	}
 
 	public void activate() {
@@ -39,5 +42,17 @@ public class Member {
 		state(status == MemberStatus.ACTIVE, "ACTIVE 상태가 아닙니다.");
 
 		this.status = MemberStatus.DEACTIVATED;
+	}
+
+	public boolean verifyPassword(String password, PasswordEncoder passwordEncoder) {
+		return passwordEncoder.matches(password, passwordHash);
+	}
+
+	public void changeNickname(String nickname) {
+		this.nickname = nickname;
+	}
+
+	public void changePassword(String password, PasswordEncoder passwordEncoder) {
+		this.passwordHash = passwordEncoder.encode(password);
 	}
 }
