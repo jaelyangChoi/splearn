@@ -24,11 +24,11 @@ class MemberTest {
 			}
 		};
 
-		member = Member.create(new MemberCreateRequest("cjl2076@naver.com", "jaeryang", "secret"), passwordEncoder);
+		member = Member.register(new MemberRegisterRequest("cjl2076@naver.com", "jaeryang", "secret"), passwordEncoder);
 	}
 
 	@Test
-	void createMember() {
+	void registerMember() {
 		assertThat(member.getStatus()).isEqualTo(MemberStatus.PENDING);
 	}
 
@@ -103,9 +103,9 @@ class MemberTest {
 	@Test
 	void invalidEmail() {
 		assertThatThrownBy(
-			() -> Member.create(new MemberCreateRequest("invalid email", "jaeryang", "secret"), passwordEncoder)
+			() -> Member.register(new MemberRegisterRequest("invalid email", "jaeryang", "secret"), passwordEncoder)
 		).isInstanceOf(IllegalArgumentException.class);
 
-		Member.create(new MemberCreateRequest("cjl2076@naver.com", "jaeryang", "secret"), passwordEncoder);
+		Member.register(new MemberRegisterRequest("cjl2076@naver.com", "jaeryang", "secret"), passwordEncoder);
 	}
 }
