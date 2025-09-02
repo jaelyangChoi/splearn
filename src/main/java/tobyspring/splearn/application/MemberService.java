@@ -1,0 +1,38 @@
+package tobyspring.splearn.application;
+
+import org.springframework.stereotype.Service;
+
+import lombok.RequiredArgsConstructor;
+import tobyspring.splearn.application.provided.MemberRegister;
+import tobyspring.splearn.application.required.EmailSender;
+import tobyspring.splearn.application.required.MemberRepository;
+import tobyspring.splearn.domain.Member;
+import tobyspring.splearn.domain.MemberRegisterRequest;
+import tobyspring.splearn.domain.PasswordEncoder;
+
+/**
+ * 도메인 로직과 외부 세계와의 상호작용을 절차적으로 구현
+ */
+@Service
+@RequiredArgsConstructor
+public class MemberService implements MemberRegister { //서비스가 커지면 port가 서비스 분리의 기준이 된다.
+	private final MemberRepository memberRepository;
+	private final EmailSender emailSender;
+	private final PasswordEncoder passwordEncoder;
+
+	@Override
+	public Member register(MemberRegisterRequest registerRequest) {
+		// check
+
+		// domain model -> 주요 로직
+		Member member = Member.register(registerRequest, passwordEncoder);
+
+		// repository
+		memberRepository.save(member);
+
+		// post process
+		emailSender.send(member.getEmail(), "등록을 완료해주세요", "아래 링크를 클릭해서 등록을 완료해주세요.");
+
+		return member;
+	}
+}
