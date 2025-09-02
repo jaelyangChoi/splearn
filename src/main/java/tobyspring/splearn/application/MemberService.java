@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import tobyspring.splearn.application.provided.MemberRegister;
 import tobyspring.splearn.application.required.EmailSender;
 import tobyspring.splearn.application.required.MemberRepository;
+import tobyspring.splearn.domain.DuplicateEmailException;
+import tobyspring.splearn.domain.Email;
 import tobyspring.splearn.domain.Member;
 import tobyspring.splearn.domain.MemberRegisterRequest;
 import tobyspring.splearn.domain.PasswordEncoder;
@@ -23,6 +25,7 @@ public class MemberService implements MemberRegister { //서비스가 커지면 
 	@Override
 	public Member register(MemberRegisterRequest registerRequest) {
 		// check
+		checkDuplicateEmail(registerRequest);
 
 		// domain model -> 주요 로직
 		Member member = Member.register(registerRequest, passwordEncoder);
@@ -31,8 +34,20 @@ public class MemberService implements MemberRegister { //서비스가 커지면 
 		memberRepository.save(member);
 
 		// post process
-		emailSender.send(member.getEmail(), "등록을 완료해주세요", "아래 링크를 클릭해서 등록을 완료해주세요.");
+		sendWelcomeEmail(member);
 
 		return member;
+	}
+
+	// 디테일한 내용은 한번 감싸자.
+	private void sendWelcomeEmail(Member member) {
+		emailSender.send(member.getEmail(), "등록을 완료해주세요", "아래 링크를 클릭해서 등록을 완료해주세요.");
+	}
+
+	// 복잡해서 한눈에 안들어온다.
+	private void checkDuplicateEmail(MemberRegisterRequest registerRequest) {
+		if (memberRepository.findByEmail(new Email(registerRequest.email())).isPresent()) {
+			throw new DuplicateEmailException("이미 사용중인 이메일입니다: " + registerRequest.email());
+		}
 	}
 }
