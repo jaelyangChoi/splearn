@@ -1,6 +1,8 @@
 package tobyspring.splearn.application;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
 import lombok.RequiredArgsConstructor;
 import tobyspring.splearn.application.provided.MemberRegister;
@@ -16,6 +18,8 @@ import tobyspring.splearn.domain.PasswordEncoder;
  * 도메인 로직과 외부 세계와의 상호작용을 절차적으로 구현
  */
 @Service
+@Transactional
+@Validated
 @RequiredArgsConstructor
 public class MemberService implements MemberRegister { //서비스가 커지면 port가 서비스 분리의 기준이 된다.
 	private final MemberRepository memberRepository;
