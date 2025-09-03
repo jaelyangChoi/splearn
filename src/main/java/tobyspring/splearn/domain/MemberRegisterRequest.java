@@ -9,6 +9,6 @@ public record MemberRegisterRequest(
 	@Size(min = 8, max = 100) String password) {
 
 	//추가 validation 로직 (or validator custom)
-	void validate(String param) {
-	}
+	// void validate(String param) {
+	// }
 }
