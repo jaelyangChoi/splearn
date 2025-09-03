@@ -1,7 +1,6 @@
 package tobyspring.splearn.application.provided;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import jakarta.persistence.EntityManager;
 

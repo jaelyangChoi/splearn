@@ -21,7 +21,7 @@ import tobyspring.splearn.domain.MemberStatus;
 @Transactional
 @Import(SplearnTestConfiguration.class)
 // @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL) //파라미터를 어떻게 가져올지
-public record MemberRegisterTest(
+record MemberRegisterTest(
 	MemberRegister memberRegister,
 	EntityManager entityManager) { //오탐: Spring TestContext 프레임워크가 테스트 메서드 단위로 트랜잭션을 시작/롤백해 주므로, 프록시가 필요없다.
 
@@ -43,9 +43,9 @@ public record MemberRegisterTest(
 
 	@Test
 	void memberRegisterRequestFail() {
-		extracted(new MemberRegisterRequest("cjl2076@naver.com", "cjl", "secret"));
-		extracted(new MemberRegisterRequest("cjl2076@naver.com", "jaeryang", "secret"));
-		extracted(new MemberRegisterRequest("cjl2076naver.com", "jaeryang", "longsecret"));
+		checkValidation(new MemberRegisterRequest("cjl2076@naver.com", "cjl", "secret"));
+		checkValidation(new MemberRegisterRequest("cjl2076@naver.com", "jaeryang", "secret"));
+		checkValidation(new MemberRegisterRequest("cjl2076naver.com", "jaeryang", "longsecret"));
 	}
 
 	@Test
@@ -61,7 +61,7 @@ public record MemberRegisterTest(
 
 	}
 
-	private void extracted(MemberRegisterRequest invalid) {
+	private void checkValidation(MemberRegisterRequest invalid) {
 		assertThatThrownBy(() -> memberRegister.register(invalid))
 			.isInstanceOf(ConstraintViolationException.class);
 	}
