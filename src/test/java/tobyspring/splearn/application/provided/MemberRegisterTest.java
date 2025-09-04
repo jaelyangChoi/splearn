@@ -18,16 +18,16 @@ import tobyspring.splearn.domain.MemberRegisterRequest;
 import tobyspring.splearn.domain.MemberStatus;
 
 @SpringBootTest
-@Transactional
+@Transactional //오탐: 트랜잭션 AOP와 달리 Spring TestContext 프레임워크가 테스트 메서드 단위로 트랜잭션을 시작/롤백해 주므로, 프록시가 필요없다.
 @Import(SplearnTestConfiguration.class)
-// @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL) //파라미터를 어떻게 가져올지
-record MemberRegisterTest(
-	MemberRegister memberRegister,
-	EntityManager entityManager) { //오탐: Spring TestContext 프레임워크가 테스트 메서드 단위로 트랜잭션을 시작/롤백해 주므로, 프록시가 필요없다.
+	// @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL) //파라미터를 어떻게 가져올지
+record MemberRegisterTest(MemberRegister memberRegister, EntityManager entityManager) {
 
 	@Test
 	void register() {
 		Member member = memberRegister.register(MemberFixture.createMemberRegisterRequest());
+
+		System.out.println(member);
 
 		assertThat(member.getId()).isNotNull();
 		assertThat(member.getStatus()).isEqualTo(MemberStatus.PENDING);
