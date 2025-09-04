@@ -22,7 +22,7 @@ import tobyspring.splearn.domain.PasswordEncoder;
 @Transactional
 @Validated
 @RequiredArgsConstructor
-public class MemberModifyService implements MemberRegister { //서비스가 커지면 port가 서비스 분리의 기준이 된다.
+class MemberModifyService implements MemberRegister { //서비스가 커지면 port가 서비스 분리의 기준이 된다.
 	private final MemberFinder memberFinder;
 	private final MemberRepository memberRepository;
 	private final EmailSender emailSender;

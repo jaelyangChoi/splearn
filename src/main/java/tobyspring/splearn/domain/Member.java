@@ -3,16 +3,9 @@ package tobyspring.splearn.domain;
 import static java.util.Objects.*;
 import static org.springframework.util.Assert.*;
 
-import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 
 import org.hibernate.annotations.NaturalId;
-import org.hibernate.annotations.NaturalIdCache;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -23,21 +16,15 @@ import lombok.ToString;
 @Getter
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@NaturalIdCache //natural id도 persistence context에 캐시
-public class Member {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+public class Member extends AbstractEntity {
 
-	@Embedded
-	@NaturalId //비즈니스 적으로 의미있는 식별자
+	@NaturalId //비즈니스적으로 의미있는 식별자
 	private Email email;
 
 	private String nickname;
 
 	private String passwordHash;
 
-	@Enumerated(EnumType.STRING)
 	private MemberStatus status;
 
 	// 정적 팩토리 메소드 -> new 클래스()를 안써서 이름을 통해 의도를 들어낼 수 있음.
