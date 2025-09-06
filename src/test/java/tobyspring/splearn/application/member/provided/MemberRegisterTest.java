@@ -1,4 +1,4 @@
-package tobyspring.splearn.application.provided;
+package tobyspring.splearn.application.member.provided;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -11,11 +11,11 @@ import org.springframework.context.annotation.Import;
 import org.springframework.transaction.annotation.Transactional;
 
 import tobyspring.splearn.SplearnTestConfiguration;
-import tobyspring.splearn.domain.DuplicateEmailException;
-import tobyspring.splearn.domain.Member;
-import tobyspring.splearn.domain.MemberFixture;
-import tobyspring.splearn.domain.MemberRegisterRequest;
-import tobyspring.splearn.domain.MemberStatus;
+import tobyspring.splearn.domain.member.DuplicateEmailException;
+import tobyspring.splearn.domain.member.Member;
+import tobyspring.splearn.domain.member.MemberFixture;
+import tobyspring.splearn.domain.member.MemberRegisterRequest;
+import tobyspring.splearn.domain.member.MemberStatus;
 
 @SpringBootTest
 @Transactional //오탐: 트랜잭션 AOP와 달리 Spring TestContext 프레임워크가 테스트 메서드 단위로 트랜잭션을 시작/롤백해 주므로, 프록시가 필요없다.

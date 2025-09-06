@@ -1,4 +1,4 @@
-package tobyspring.splearn.domain;
+package tobyspring.splearn.domain.member;
 
 /**
  * 도메인에서 사용하므로, 애플리케이션의 required port에 두지말자.

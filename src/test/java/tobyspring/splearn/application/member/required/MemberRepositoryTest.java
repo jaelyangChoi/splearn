@@ -1,7 +1,9 @@
-package tobyspring.splearn.application.required;
+package tobyspring.splearn.application.member.required;
 
 import static org.assertj.core.api.Assertions.*;
-import static tobyspring.splearn.domain.MemberFixture.*;
+import static tobyspring.splearn.domain.member.MemberFixture.*;
+
+import java.util.Optional;
 
 import jakarta.persistence.EntityManager;
 
@@ -10,7 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.dao.DataIntegrityViolationException;
 
-import tobyspring.splearn.domain.Member;
+import tobyspring.splearn.domain.member.Member;
+import tobyspring.splearn.domain.member.MemberStatus;
 
 @DataJpaTest
 class MemberRepositoryTest {
@@ -31,6 +34,11 @@ class MemberRepositoryTest {
 		assertThat(member.getId()).isNotNull();
 
 		entityManager.flush();
+		entityManager.clear();
+
+		var found = memberRepository.findById(member.getId()).orElseThrow();
+		assertThat(found.getStatus()).isEqualTo(MemberStatus.PENDING);
+		assertThat(found.getDetail().getRegisteredAt()).isNotNull();
 	}
 
 	@Test
