@@ -1,6 +1,7 @@
 package tobyspring.splearn.domain.member;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static tobyspring.splearn.domain.member.MemberFixture.*;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -109,4 +110,13 @@ class MemberTest {
 		assertThat(member.getDetail().getProfile().address()).isEqualTo(request.profileAddress());
 		assertThat(member.getDetail().getIntroduction()).isEqualTo(request.introduction());
 	}
+
+	@Test
+	void updateInfoFail() {
+		assertThatThrownBy(() -> {
+			var request = new MemberInfoUpdateRequest("cjl0701", "jaeryang001", "자기소개");
+			member.updateInfo(request);
+		}).isInstanceOf(IllegalStateException.class);
+	}
+
 }

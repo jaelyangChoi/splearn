@@ -51,7 +51,6 @@
             </unique-constraint>
         </table>
         <attributes>
-            <embedded name="profile"/>
             <basic name="introduction">
                 <column column-definition="TEXT"/>
             </basic>
@@ -60,6 +59,7 @@
             </basic>
             <basic name="activatedAt"/>
             <basic name="deactivatedAt"/>
+            <embedded name="profile"/>
         </attributes>
     </entity>
 
