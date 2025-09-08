@@ -5,7 +5,7 @@ import static org.springframework.util.Assert.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-import jakarta.persistence.Embedded;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 
 import lombok.AccessLevel;
@@ -19,11 +19,11 @@ import tobyspring.splearn.domain.AbstractEntity;
 @ToString(callSuper = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MemberDetail extends AbstractEntity {
-	@Embedded
 	private Profile profile;
 
 	private String introduction;
 
+	@Column(nullable = false)
 	private LocalDateTime registeredAt;
 
 	private LocalDateTime activatedAt;
@@ -50,7 +50,7 @@ public class MemberDetail extends AbstractEntity {
 		this.deactivatedAt = LocalDateTime.now();
 	}
 
-	void updateInfo(MemberInfoUpdateRequest updateRequest){
+	void updateInfo(MemberInfoUpdateRequest updateRequest) {
 		this.profile = new Profile(updateRequest.profileAddress());
 		this.introduction = Objects.requireNonNull(updateRequest.introduction());
 	}

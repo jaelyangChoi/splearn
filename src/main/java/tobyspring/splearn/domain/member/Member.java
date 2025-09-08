@@ -34,7 +34,6 @@ public class Member extends AbstractEntity {
 
 	private MemberStatus status;
 
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private MemberDetail detail;
 
 	// 정적 팩토리 메소드 -> new 클래스()를 안써서 이름을 통해 의도를 들어낼 수 있음.
